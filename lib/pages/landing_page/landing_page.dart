@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lung_cancer_detection_ui/api/api.dart';
 import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.dart';
 import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
 

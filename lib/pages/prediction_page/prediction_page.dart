@@ -11,6 +11,19 @@ class PredictionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SizedBox(
+        height: UiUtils.getPercentageHeight(context, 12),
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Icon(
+              Icons.home,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
