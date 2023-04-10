@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'pages/landing_page/landing_page.dart';
+import 'resources/themes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,9 +12,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LandingPage(),
+      theme: Themes.primaryLightTheme,
+      home: const LandingPage(),
     );
   }
 }
