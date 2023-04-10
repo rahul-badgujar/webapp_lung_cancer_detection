@@ -54,12 +54,14 @@ class LandingPage extends StatelessWidget {
   }
 
   Future<void> onProceedClicked(BuildContext context) async {
-    final imgBytes = await ImagePickService.pickImageAsBytes();
-    if (imgBytes != null && context.mounted) {
+    final imgEncoding = await ImagePickService.pickImageAsBase64String();
+    if (imgEncoding != null && context.mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PredictionPage(imageBytes: imgBytes),
+          builder: (context) => PredictionPage(
+            imageBase64Encoding: imgEncoding,
+          ),
         ),
       );
     }
