@@ -10,8 +10,13 @@ class Themes {
       primaryColor: ColorPalette.primaryColor,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       scaffoldBackgroundColor: ColorPalette.scaffoldBgColor,
-      textTheme: GoogleFonts.latoTextTheme().copyWith(),
+      textTheme: GoogleFonts.courierPrimeTextTheme(),
       appBarTheme: defaultAppBarTheme,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: GoogleFonts.courierPrime(),
+        ),
+      ),
     );
   }
 

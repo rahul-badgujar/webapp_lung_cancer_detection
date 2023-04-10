@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.dart';
 import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
 
@@ -41,9 +42,7 @@ class LandingPage extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.white10,
-        textStyle: const TextStyle(
-          fontSize: 18,
-        ),
+        textStyle: GoogleFonts.courierPrime(fontSize: 18),
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 32, vertical: 24),
       ),
