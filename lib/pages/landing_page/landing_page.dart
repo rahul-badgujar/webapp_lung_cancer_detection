@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.dart';
+import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
+
+import '../../utils/ui_utils.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({
@@ -13,14 +17,14 @@ class LandingPage extends StatelessWidget {
         children: [
           _buildBackgroundImage(),
           Positioned(
-            left: 150,
+            left: UiUtils.getPercentageWidth(context, 8),
             child: Column(
               children: [
                 _buildAppTitle(),
                 const SizedBox(
                   height: 32,
                 ),
-                _buildProceedButton(),
+                _buildProceedButton(context),
               ],
             ),
           )
@@ -29,9 +33,11 @@ class LandingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProceedButton() {
+  Widget _buildProceedButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        await onProceedClicked(context);
+      },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.white10,
@@ -45,6 +51,18 @@ class LandingPage extends StatelessWidget {
         "Proceed".toUpperCase(),
       ),
     );
+  }
+
+  Future<void> onProceedClicked(BuildContext context) async {
+    final imgBytes = await ImagePickService.pickImageAsBytes();
+    if (imgBytes != null && context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PredictionPage(imageBytes: imgBytes),
+        ),
+      );
+    }
   }
 
   Widget _buildAppTitle() {
