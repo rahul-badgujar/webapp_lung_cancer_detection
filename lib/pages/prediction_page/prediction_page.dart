@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import '../../resources/colors_pallet.dart';
 import '../../utils/ui_utils.dart';
 
 class PredictionPage extends StatelessWidget {
@@ -18,7 +19,7 @@ class PredictionPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 3,
+                flex: 5,
                 child: PageView(
                   controller: flowPageController,
                   physics: const NeverScrollableScrollPhysics(),
@@ -29,8 +30,8 @@ class PredictionPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 1,
-                child: _buildFlowForwadingIcon(),
+                flex: 2,
+                child: _buildFlowForwadingIcon(context),
               ),
             ],
           ),
@@ -40,16 +41,22 @@ class PredictionPage extends StatelessWidget {
     ;
   }
 
-  Widget _buildFlowForwadingIcon() {
-    return IconButton(
-      onPressed: () async {
+  Widget _buildFlowForwadingIcon(BuildContext context) {
+    final buttonRadius = UiUtils.getPercentageWidth(context, 6);
+    return GestureDetector(
+      onTap: () async {
         await gotoNextFlow();
       },
-      icon: const Icon(
-        Icons.navigate_next_rounded,
-      ),
-      style: IconButton.styleFrom(
-        backgroundColor: Colors.amber,
+      child: CircleAvatar(
+        backgroundColor: ColorPalette.primaryColor,
+        radius: buttonRadius,
+        child: Center(
+          child: Icon(
+            Icons.navigate_next,
+            size: buttonRadius * 0.8,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
