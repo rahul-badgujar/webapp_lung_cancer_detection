@@ -111,7 +111,7 @@ class LandingPage extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
-          textStyle: GoogleFonts.courierPrime(fontSize: 16),
+          textStyle: GoogleFonts.courierPrime(fontSize: 18),
           padding: const EdgeInsetsDirectional.symmetric(
               horizontal: 18, vertical: 24),
         ),
