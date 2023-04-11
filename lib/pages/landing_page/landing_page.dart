@@ -5,6 +5,7 @@ import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
 
 import '../../utils/ui_utils.dart';
 import '../../widgets/underline_on_hover_text_button.dart';
+import 'widgets/admin_login_dialog.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({
@@ -42,7 +43,13 @@ class LandingPage extends StatelessWidget {
                       border: const Border(
                           bottom: BorderSide(color: Colors.white, width: 1)),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AdminLoginDialog();
+                              });
+                        },
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.white,
                           textStyle: GoogleFonts.courierPrime(fontSize: 16),
