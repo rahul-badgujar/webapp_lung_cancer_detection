@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lung_cancer_detection_ui/services/auth_service.dart';
 import 'package:lung_cancer_detection_ui/utils/ui_utils.dart';
 
 class AdminLoginDialog extends StatelessWidget {
@@ -30,7 +32,7 @@ class AdminLoginDialog extends StatelessWidget {
       children: [
         _buildLoginForm(),
         const SizedBox(height: 32),
-        _buildLoginButton(),
+        _buildLoginButton(context),
       ],
     );
   }
@@ -85,10 +87,10 @@ class AdminLoginDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        onLoginClicked();
+      onPressed: () async {
+        await onLoginClicked(context);
       },
       child: const Padding(
         padding: EdgeInsets.all(8.0),
@@ -103,10 +105,19 @@ class AdminLoginDialog extends StatelessWidget {
     );
   }
 
-  void onLoginClicked() {
+  Future<void> onLoginClicked(BuildContext context) async {
     final loginFormCurrentState = _loginFormKey.currentState;
     if (loginFormCurrentState != null && loginFormCurrentState.validate()) {
       loginFormCurrentState.save();
+      final email = _emailValueController.text;
+      final password = _passwordValueController.text;
+      try {
+        await AuthService.instance.login(email, password);
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+      } on Exception catch (e) {
+        print(e);
+      }
     }
   }
 }

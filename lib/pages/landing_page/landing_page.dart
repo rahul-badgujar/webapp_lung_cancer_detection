@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.dart';
+import 'package:lung_cancer_detection_ui/services/auth_service.dart';
 import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
 
 import '../../utils/ui_utils.dart';
@@ -37,34 +39,62 @@ class LandingPage extends StatelessWidget {
             child: SizedBox(
               width: UiUtils.getPercentageWidth(context, 94),
               height: UiUtils.getPercentageHeight(context, 5),
-              child: Row(
-                children: [
-                  BorderOnHoverWidget(
-                      border: const Border(
-                          bottom: BorderSide(color: Colors.white, width: 1)),
-                      child: TextButton(
-                        onPressed: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AdminLoginDialog();
-                              });
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          textStyle: GoogleFonts.courierPrime(fontSize: 16),
-                          padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 18, vertical: 24),
-                        ),
-                        child: const Text(
-                          "Admin Login",
-                        ),
-                      ))
-                ],
-              ),
+              child: _buildMenu(context),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildMenu(BuildContext context) {
+    return StreamBuilder<User?>(
+        stream: AuthService.instance.authStateChanges,
+        builder: (context, snapshot) {
+          final isAdminLoggedIn = snapshot.data != null;
+          return Row(
+            children: [
+              if (!isAdminLoggedIn)
+                _buildMenuButton(
+                  context,
+                  label: "ADMIN LOGIN",
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AdminLoginDialog();
+                      },
+                    );
+                  },
+                ),
+              if (isAdminLoggedIn)
+                _buildMenuButton(
+                  context,
+                  label: "ADMIN LOGOUT",
+                  onPressed: () async {
+                    await AuthService.instance.logout();
+                  },
+                ),
+            ],
+          );
+        });
+  }
+
+  Widget _buildMenuButton(BuildContext context,
+      {required String label, required VoidCallback onPressed}) {
+    return BorderOnHoverWidget(
+      border: const Border(bottom: BorderSide(color: Colors.white, width: 1)),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          textStyle: GoogleFonts.courierPrime(fontSize: 16),
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 18, vertical: 24),
+        ),
+        child: Text(
+          label,
+        ),
       ),
     );
   }
