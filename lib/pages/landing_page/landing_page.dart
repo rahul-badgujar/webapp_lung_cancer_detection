@@ -4,6 +4,7 @@ import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.d
 import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
 
 import '../../utils/ui_utils.dart';
+import '../../widgets/underline_on_hover_text_button.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({
@@ -28,6 +29,33 @@ class LandingPage extends StatelessWidget {
                 _buildProceedButton(context),
               ],
             ),
+          ),
+          Positioned(
+            left: UiUtils.getPercentageWidth(context, 3),
+            top: UiUtils.getPercentageHeight(context, 2),
+            child: SizedBox(
+              width: UiUtils.getPercentageWidth(context, 94),
+              height: UiUtils.getPercentageHeight(context, 5),
+              child: Row(
+                children: [
+                  BorderOnHoverWidget(
+                      border: const Border(
+                          bottom: BorderSide(color: Colors.white, width: 1)),
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: GoogleFonts.courierPrime(fontSize: 16),
+                          padding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 18, vertical: 24),
+                        ),
+                        child: const Text(
+                          "Admin Login",
+                        ),
+                      ))
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -42,7 +70,7 @@ class LandingPage extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.white10,
-        textStyle: GoogleFonts.courierPrime(fontSize: 18),
+        textStyle: GoogleFonts.courierPrime(fontSize: 21),
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 32, vertical: 24),
       ),
@@ -72,7 +100,7 @@ class LandingPage extends StatelessWidget {
       style: TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.white,
-        fontSize: 48,
+        fontSize: 56,
       ),
     );
   }
