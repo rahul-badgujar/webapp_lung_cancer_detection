@@ -39,7 +39,7 @@ class LandingPage extends StatelessWidget {
             child: SizedBox(
               width: UiUtils.getPercentageWidth(context, 94),
               height: UiUtils.getPercentageHeight(context, 5),
-              child: _buildMenu(context),
+              child: _buildTopMenuBar(context),
             ),
           )
         ],
@@ -47,37 +47,60 @@ class LandingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenu(BuildContext context) {
+  Widget _buildTopMenuBar(BuildContext context) {
     return StreamBuilder<User?>(
         stream: AuthService.instance.authStateChanges,
         builder: (context, snapshot) {
           final isAdminLoggedIn = snapshot.data != null;
+          final adminMenuButtons = <Widget>[];
+          if (isAdminLoggedIn) {
+            adminMenuButtons.addAll(<Widget>[
+              _buildMenuButton(
+                context,
+                label: "TRAIN",
+                onPressed: () async {},
+              ),
+            ]);
+          }
           return Row(
             children: [
-              if (!isAdminLoggedIn)
-                _buildMenuButton(
-                  context,
-                  label: "ADMIN LOGIN",
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AdminLoginDialog();
-                      },
-                    );
-                  },
+              Expanded(
+                child: Row(
+                  children: adminMenuButtons,
                 ),
-              if (isAdminLoggedIn)
-                _buildMenuButton(
-                  context,
-                  label: "ADMIN LOGOUT",
-                  onPressed: () async {
-                    await AuthService.instance.logout();
-                  },
-                ),
+              ),
+              _buildLoginLogoutButton(context, isAdminLoggedIn)
             ],
           );
         });
+  }
+
+  Widget _buildLoginLogoutButton(BuildContext context, bool isAdminLoggedIn) {
+    return Row(
+      children: [
+        if (!isAdminLoggedIn)
+          _buildMenuButton(
+            context,
+            label: "ADMIN LOGIN",
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AdminLoginDialog();
+                },
+              );
+            },
+          ),
+        if (isAdminLoggedIn)
+          _buildMenuButton(
+            context,
+            label: "ADMIN LOGOUT",
+            onPressed: () async {
+              await AuthService.instance.logout();
+            },
+          ),
+      ],
+    );
   }
 
   Widget _buildMenuButton(BuildContext context,
