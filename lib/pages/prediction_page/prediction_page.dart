@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lung_cancer_detection_ui/api/api.dart';
 import 'package:lung_cancer_detection_ui/resources/values.dart';
 import 'package:lung_cancer_detection_ui/widgets/labeled_image_card.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../../utils/ui_utils.dart';
 
@@ -109,6 +110,10 @@ class PredictionPage extends StatelessWidget {
     return Column(
       children: [
         _buildResultStatusBaner(context, result),
+        Center(
+          child: _buildScaleGauge(context, result),
+        ),
+        const Divider(),
         Padding(
           padding: Values.getDefaultPagePaddding(context),
           child:
@@ -119,6 +124,70 @@ class PredictionPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildScaleGauge(BuildContext context, Map<dynamic, dynamic> result) {
+    final scaleValue =
+        double.parse(result['predicted_scale'].toStringAsFixed(2));
+    return Padding(
+      padding: EdgeInsets.all(UiUtils.getPercentageWidth(context, 1)),
+      child: SizedBox(
+        width: UiUtils.getPercentageWidth(context, 50),
+        child: SfRadialGauge(
+          title: const GaugeTitle(
+              text: "Severity Scale",
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+              borderWidth: 1,
+              borderColor: Colors.black,
+              alignment: GaugeAlignment.center),
+          enableLoadingAnimation: true,
+          animationDuration: 1000,
+          axes: <RadialAxis>[
+            RadialAxis(minimum: 1, maximum: 10, pointers: <GaugePointer>[
+              NeedlePointer(
+                value: scaleValue,
+              ),
+              ..._buildScalePointers(result['scale_pointers'] as Map)
+            ], annotations: <GaugeAnnotation>[
+              GaugeAnnotation(
+                widget: Text(
+                  scaleValue.toString(),
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                angle: 90,
+                positionFactor: 0.5,
+              )
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<GaugePointer> _buildScalePointers(Map scalePointers) {
+    return scalePointers.keys
+        .map(
+          (e) => WidgetPointer(
+            value: scalePointers[e],
+            child: CircleAvatar(
+              backgroundColor: Colors.black,
+              radius: 15,
+              child: Text(
+                e.toString().characters.characterAt(0).toUpperCase().toString(),
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        )
+        .toList();
   }
 
   Widget _buildImageProcessingStepsOutputs(
