@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lung_cancer_detection_ui/api/api.dart';
 import 'package:lung_cancer_detection_ui/pages/prediction_page/prediction_page.dart';
 import 'package:lung_cancer_detection_ui/services/auth_service.dart';
 import 'package:lung_cancer_detection_ui/services/image_pick_service.dart';
@@ -57,8 +58,19 @@ class LandingPage extends StatelessWidget {
             adminMenuButtons.addAll(<Widget>[
               _buildMenuButton(
                 context,
-                label: "TRAIN",
-                onPressed: () async {},
+                label: "TRAIN SVM",
+                onPressed: () async {
+                  final result = await Api.trainSvmModel();
+                  print(result);
+                },
+              ),
+              _buildMenuButton(
+                context,
+                label: "TRAIN SVR",
+                onPressed: () async {
+                  final result = await Api.trainSvrModel();
+                  print(result);
+                },
               ),
             ]);
           }

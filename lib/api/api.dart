@@ -10,4 +10,20 @@ class Api {
         body: {"image_base64": imgBase64});
     return jsonDecode(result.body);
   }
+
+  static Future<Map> trainSvmModel() async {
+    final result = await http.post(
+        Uri.parse('$serverUrl/api/models/cancer_detection_model/train'),
+        body: <String, String>{
+          "pretraining_preprocessing_enabled": true.toString(),
+          "update_stored_model": false.toString()
+        });
+    return jsonDecode(result.body);
+  }
+
+  static Future<Map> trainSvrModel() async {
+    final result = await http.post(
+        Uri.parse('$serverUrl/api/models/severity_prediction_model/train'));
+    return jsonDecode(result.body);
+  }
 }
